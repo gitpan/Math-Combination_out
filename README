@@ -1,0 +1,73 @@
+Math::Combination_out - version 0.01
+===================
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+SYNOPSIS
+
+Math::Combination_out - Prints combinations without repetitions
+
+In this module was applied the approach for k-combinations without repetition in lexicographic order, 
+presented in the ANSI-C code by Siegfried Koepf at:
+
+http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
+
+Example to use the module Math::Combination_out:
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use diagnostics;
+
+use Math::Combination_out qw(:CMB);
+
+BEGIN {
+  use lib 'lib';
+}
+
+#array for combinatorics
+my @words = qw/a1 b2 c3 d4 e5 f6/;
+
+#length for combinatorics
+my $k = 4;
+
+push(@words, $k);
+
+print Combinations(@words),"\n";
+
+
+Result:
+
+(1) a1 b2 c3 d4
+(2) a1 b2 c3 e5
+(3) a1 b2 c3 f6
+(4) a1 b2 d4 e5
+(5) a1 b2 d4 f6
+(6) a1 b2 e5 f6
+(7) a1 c3 d4 e5
+(8) a1 c3 d4 f6
+(9) a1 c3 e5 f6
+(10) a1 d4 e5 f6
+(11) b2 c3 d4 e5
+(12) b2 c3 d4 f6
+(13) b2 c3 e5 f6
+(14) b2 d4 e5 f6
+(15) c3 d4 e5 f6
+
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2011 by Petar Kaleychev <petar.kaleychev@gmail.com>
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+
