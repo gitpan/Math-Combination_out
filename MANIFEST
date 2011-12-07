@@ -4,4 +4,6 @@ MANIFEST
 README
 t/Combination_out.t
 lib/Math/Combination_out.pm
-example.pl
+Combination_out-ex1.pl
+Combination_out-ex2.pl
+gpl.txt

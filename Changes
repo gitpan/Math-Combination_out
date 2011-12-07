@@ -1,1 +1,6 @@
 Math::Combination_out - 0.01 - first version - Prints combinations without repetitions
+
+Math::Combination_out - 0.02 
+- Added option to prints combinations with repetition
+- Moved to GPLv3 license
+- Some small improvements
