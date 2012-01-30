@@ -4,3 +4,6 @@ Math::Combination_out - 0.02
 - Added option to prints combinations with repetition
 - Moved to GPLv3 license
 - Some small improvements
+
+Math::Combination_out - 0.03
+- The results are exported

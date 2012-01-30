@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Math::Combination_out - Prints combinations without or with repetition
+Math::Combination_out - Combinations without or with repetition
 
 In this module was applied the approach for k-combinations without and with repetition in lexicographic order, 
 presented in the ANSI-C code by Siegfried Koepf at:
@@ -100,7 +100,7 @@ Result:
 
 =head1 DESCRIPTION
 
-Math::Combination_out - Prints combinations without or with repetition
+Math::Combination_out - Combinations without or with repetition
 
 =head1 AUTHOR
 
@@ -136,7 +136,7 @@ use warnings;
 use diagnostics;
 use Exporter;
 
-our $VERSION     = 0.02;
+our $VERSION     = 0.03;
 our @ISA         = qw(Exporter);
 our @EXPORT      = ();
 our @EXPORT_OK   = qw(Combinations);
@@ -177,19 +177,25 @@ if (($opt!= 1) and ($opt!= 2))
 }
 
 our @arr_comb;
+our $count = 0;
+
 sub print_arr_comb
 {
 my $i;
 my $out_num;
+
+my $ret = "";
+$ret .= "($count) ";
 for($i = 0; $i < $k; $i++)
  {
  $out_num = $arr_comb[$i];
- print "$words[$out_num] ";
+ $ret .= "$words[$out_num] ";
  }
-print "\n";	
+$ret .= "\n";
+
+return $ret;
 }
 
-my $count = 0;
 my $i;
 if($opt == 1)
 {
@@ -207,8 +213,8 @@ for($i = 0; $i < $k; $i++)
 }  
 $count++;
 
-print "($count) ";
-&print_arr_comb;
+our $ret_all = "";
+$ret_all .= &print_arr_comb;
 
 while()
 {
@@ -219,9 +225,7 @@ while($arr_comb[$k - 1] < $n - 1)
  {
  $arr_comb[$k - 1]++;
  $count++;
- 
- print "($count) ";
- &print_arr_comb;
+ $ret_all .= &print_arr_comb;
  }
 }
 
@@ -243,6 +247,7 @@ while($i >= 0 && $arr_comb[$i] == $n - 1)
 
 if($i < 0)
  {
+ return $ret_all;
  exit;
  } 
 
@@ -264,11 +269,10 @@ for($i += 1; $i < $k; $i++)
  $arr_comb[$i] = $arr_comb[$i - 1];
  }
 $count++;
-} 
+}
 
-print "($count) ";
-&print_arr_comb;
-  
+$ret_all .= &print_arr_comb;
+
 }
 }
 
