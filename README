@@ -1,4 +1,4 @@
-Math::Combination_out - version 0.03
+Math::Combination_out - version 0.04
 ====================================
 
 INSTALLATION
@@ -21,35 +21,30 @@ http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
 
 =head1 SYNOPSIS
 
-Example1: Combinations without repetition
+EXAMPLE:
 
-#!/usr/bin/perl
+use Math::Combination_out;
 
-use strict;
-use warnings;
-use diagnostics;
+{my @words = qw/a1 b2 c3 d4 e5 f6/; #array for combinatorics
+my $k = 4; #length for combinatorics, use only integer!
+my $opt = 1; #option: 1 - without repetition
 
-use Math::Combination_out qw(:CMB);
+push(@words, $k, $opt);
 
-BEGIN {
-  use lib 'lib';
-}
+print Combinations(@words),"\n"}
 
-#array for combinatorics
-my @words = qw/a1 b2 c3 d4 e5 f6/;
+{my @words = qw/a1 b2 c3/; #array for combinatorics
 
-#length for combinatorics, use only integer!
-my $k = 4;
+my $k = 3; #length for combinatorics, use only integer!
+my $opt = 2; #option: 2 - with repetition
 
-#option: 1 - without repetition
-my $opt = 1;
+push(@words, $k, $opt);
 
-push(@words, $k);
-push(@words, $opt);
-
-print Combinations(@words),"\n";
+print Combinations(@words),"\n";}
 
 Result:
+
+(Combinations without repetition):
 
 (1) a1 b2 c3 d4
 (2) a1 b2 c3 e5
@@ -67,35 +62,7 @@ Result:
 (14) b2 d4 e5 f6
 (15) c3 d4 e5 f6
 
-Example2: Combinations with repetition
-
-#!/usr/bin/perl
-
-use strict;
-use warnings;
-use diagnostics;
-
-use Math::Combination_out qw(:CMB);
-
-BEGIN {
-  use lib 'lib';
-}
-
-#array for combinatorics
-my @words = qw/a1 b2 c3/;
-
-#length for combinatorics, use only integer!
-my $k = 3;
-
-#option: 2 - with repetition
-my $opt = 2;
-
-push(@words, $k);
-push(@words, $opt);
-
-print Combinations(@words),"\n";
-
-Result:
+(Combinations with repetition):
 
 (1) a1 a1 a1
 (2) a1 a1 b2

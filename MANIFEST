@@ -2,8 +2,6 @@ Changes
 Makefile.PL
 MANIFEST
 README
-t/Combination_out.t
-lib/Math/Combination_out.pm
-Combination_out-ex1.pl
-Combination_out-ex2.pl
+test.pl
+Combination_out.pm
 gpl.txt
