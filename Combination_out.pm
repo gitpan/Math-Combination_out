@@ -8,7 +8,7 @@ our @ISA = qw(Exporter);
 our %EXPORT_TAGS = ( 'all' => [ qw(Combination_out) ] );
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(Combinations);
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub Combinations
 {
@@ -225,7 +225,7 @@ Report them to the author.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2011 Petar Kaleychev
+Copyright (c) 2011-2012 Petar Kaleychev
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
