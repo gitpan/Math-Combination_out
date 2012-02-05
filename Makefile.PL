@@ -3,6 +3,6 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     'NAME'		=> 'Math::Combination_out',
-    'VERSION_FROM'	=> 'Combination_out.pm', # finds $VERSION
-    'PREREQ_PM'		=> {}, # e.g., Module::Name => 1.1
+    'VERSION_FROM'	=> 'Combination_out.pm',
+    'PREREQ_PM'		=> {},
 );

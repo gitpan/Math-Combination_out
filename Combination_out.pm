@@ -3,143 +3,112 @@ package Math::Combination_out;
 use strict;
 use warnings;
 
-require Exporter;
+use Exporter;
 our @ISA = qw(Exporter);
-our %EXPORT_TAGS = ( 'all' => [ qw(Combination_out) ] );
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-our @EXPORT = qw(Combinations);
-our $VERSION = '0.05';
+our @EXPORT = qw(combinations);
+our $VERSION = '0.06';
 
-sub Combinations
-{
+sub add_arr_comb;
+sub combinations;
+sub requirements;
 
-sub requirements
-{
-print "Requirements:\n";
-print "k - integer\n";
-print "k > 0\n";
-print "k < or = size of array\n";
-print "opt = 1 or opt = 2\n";
-print "Quit\n";
-exit;	
-}
+my ($count, $i, $k, @words, $r);
 
-our @words = @_;
-
-our $opt = pop(@words);
-our $k = pop(@words);
-
+sub combinations {
+@words = @_;
+$count = 0;
+my $opt = pop(@words);
+$k = pop(@words);
 my $len_words = $#words;
 my $n = $len_words + 1;
+my $ret_all = "";
 
-if (($k <= 0) or ($n == 0) or ($k > $n))
-{
-&requirements;	
-}
+if (($k <= 0) or ($n == 0) or ($k > $n)) 
+{requirements}
 
 if (($opt!= 1) and ($opt!= 2))
-{
-&requirements;	
-}
+{requirements}
 
-our @arr_comb;
-our $count = 0;
-
-sub print_arr_comb
-{
-my $i;
-my $out_num;
-
-my $ret = "";
-$ret .= "($count) ";
- for($i = 0; $i < $k; $i++)
- {
- $out_num = $arr_comb[$i];
- $ret .= "$words[$out_num] ";
- }
-$ret .= "\n";
-
-return $ret;
-}
-
-my $i;
 if($opt == 1)
 {
  for($i = 0; $i < $k; $i++) 
- {
- $arr_comb[$i] = $i;
- }
+ {$r->[$i] = $i}
 }
 if($opt == 2)
 {
  for($i = 0; $i < $k; $i++) 
- {
- $arr_comb[$i] = 0;
- }
-}  
+ {$r->[$i] = 0}
+}
 $count++;
 
-our $ret_all = "";
-$ret_all .= &print_arr_comb;
+ sub add_arr_comb {
+ my $ret = "";
+ $ret .= "($count) ";
+
+ for($i = 0; $i < $k; $i++)
+ {$ret .= "$words[$r->[$i]] "}
+
+ $ret .= "\n";
+ return $ret;
+ }
+
+$ret_all .= add_arr_comb;
 
 while()
 {
 
 if($opt == 1)
 {
- while($arr_comb[$k - 1] < $n - 1)
- {
- $arr_comb[$k - 1]++;
+ while($r->[$k - 1] < $n - 1)
+ {$r->[$k - 1]++;
  $count++;
- $ret_all .= &print_arr_comb;
- }
+ $ret_all .= add_arr_comb}
 }
 
 $i = $k - 1;
 if($opt == 1)
 { 
- while($i >= 0 && $arr_comb[$i] == $n - $k + $i)
- {
-  $i--;
- }
+ while($i >= 0 && $r->[$i] == $n - $k + $i)
+ {$i--}
 }
 if($opt == 2)
 { 
- while($i >= 0 && $arr_comb[$i] == $n - 1)
- {
-  $i--;
- }
+ while($i >= 0 && $r->[$i] == $n - 1)
+ {$i--}
 }
 
 if($i < 0)
- {
- return $ret_all;
- exit;
- } 
+{return $ret_all} 
 
-$arr_comb[$i]++;
+$r->[$i]++;
 
 if($opt == 1)
 {  
  for($i += 1; $i < $k; $i++)
- {
- $arr_comb[$i] = $arr_comb[$i - 1] + 1;
- }
+ {$r->[$i] = $r->[$i - 1] + 1}
 $count++;
 }
 
 if($opt == 2)
-{  
+{
  for($i += 1; $i < $k; $i++)
- {
- $arr_comb[$i] = $arr_comb[$i - 1];
- }
+ {$r->[$i] = $r->[$i - 1]}
 $count++;
 }
 
-$ret_all .= &print_arr_comb;
+$ret_all .= add_arr_comb;
 
 }
+}
+
+sub requirements {
+print "Requirements:\n";
+print "k - integer\n";
+print "k > 0\n";
+print "k < or = size of array\n";
+print "opt = 1 or opt = 2\n";
+print "Quit\n";
+exit(1);
 }
 
 1;
@@ -167,7 +136,7 @@ my $opt = 1; #option: 1 - without repetition
 
 push(@words, $k, $opt);
 
-print Combinations(@words),"\n"}
+print combinations(@words),"\n"}
 
 {my @words = qw/a1 b2 c3/; #array for combinatorics
 
@@ -176,7 +145,7 @@ my $opt = 2; #option: 2 - with repetition
 
 push(@words, $k, $opt);
 
-print Combinations(@words),"\n";}
+print combinations(@words),"\n"}
 
 Result:
 
@@ -221,7 +190,7 @@ Petar Kaleychev <petar.kaleychev@gmail.com>
 
 =head1 BUGS
 
-Report them to the author.
+Report them to the author
 
 =head1 COPYRIGHT
 
