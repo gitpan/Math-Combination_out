@@ -1,119 +1,114 @@
 package Math::Combination_out;
 
+use 5.010000;
 use strict;
 use warnings;
 
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations);
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 sub add_arr_comb;
 sub combinations;
 sub requirements;
 
-my ($count, $i, $k, @words, $r);
-
+my ($count, $i, $k, $r, @words);
 sub combinations {
-@words = @_;
-$count = 0;
-my $opt = pop(@words);
-$k = pop(@words);
-my $len_words = $#words;
-my $n = $len_words + 1;
-my $ret_all = "";
+	@words = @_;
+	$count = 0;
+	my $opt = pop(@words);
+	$k = pop(@words);
+	my $len_words = $#words;
+	my $n = $len_words + 1;
+	my $ret_all = "";
+	
+	if (($k <= 0) or ($n == 0) or ($k > $n)) {
+		requirements;
+	}
+	if (($opt!= 1) and ($opt!= 2)) {
+		requirements;
+	}
 
-if (($k <= 0) or ($n == 0) or ($k > $n)) 
-{requirements}
+	if($opt == 1) {
+ 		for($i = 0; $i < $k; $i++) {
+			$r->[$i] = $i;
+		}
+	}
+	if($opt == 2) {
+ 		for($i = 0; $i < $k; $i++) {
+			$r->[$i] = 0;
+		}
+	}
+	$count++;
 
-if (($opt!= 1) and ($opt!= 2))
-{requirements}
+		sub add_arr_comb {
+ 			my $ret = "";
+ 			$ret .= "($count) ";
+			for($i = 0; $i < $k; $i++) {
+				$ret .= "$words[$r->[$i]] ";
+			}
+			$ret .= "\n";
+			return $ret;
+		}
+	$ret_all .= add_arr_comb;
 
-if($opt == 1)
-{
- for($i = 0; $i < $k; $i++) 
- {$r->[$i] = $i}
-}
-if($opt == 2)
-{
- for($i = 0; $i < $k; $i++) 
- {$r->[$i] = 0}
-}
-$count++;
+	while() {
+		if($opt == 1) {
+			while($r->[$k - 1] < $n - 1) {
+				$r->[$k - 1]++;
+				$count++;
+				$ret_all .= add_arr_comb;
+			}
+		}
+	$i = $k - 1;
+	
+	if($opt == 1) {
+ 		while($i >= 0 && $r->[$i] == $n - $k + $i) {
+			$i--;
+		}
+	}
+	if($opt == 2) { 
+		while($i >= 0 && $r->[$i] == $n - 1) {
+			$i--;
+		}
+	}
 
- sub add_arr_comb {
- my $ret = "";
- $ret .= "($count) ";
+	if($i < 0) {
+		return $ret_all;
+	}
+	$r->[$i]++;
 
- for($i = 0; $i < $k; $i++)
- {$ret .= "$words[$r->[$i]] "}
-
- $ret .= "\n";
- return $ret;
- }
-
-$ret_all .= add_arr_comb;
-
-while()
-{
-
-if($opt == 1)
-{
- while($r->[$k - 1] < $n - 1)
- {$r->[$k - 1]++;
- $count++;
- $ret_all .= add_arr_comb}
-}
-
-$i = $k - 1;
-if($opt == 1)
-{ 
- while($i >= 0 && $r->[$i] == $n - $k + $i)
- {$i--}
-}
-if($opt == 2)
-{ 
- while($i >= 0 && $r->[$i] == $n - 1)
- {$i--}
-}
-
-if($i < 0)
-{return $ret_all} 
-
-$r->[$i]++;
-
-if($opt == 1)
-{  
- for($i += 1; $i < $k; $i++)
- {$r->[$i] = $r->[$i - 1] + 1}
-$count++;
-}
-
-if($opt == 2)
-{
- for($i += 1; $i < $k; $i++)
- {$r->[$i] = $r->[$i - 1]}
-$count++;
-}
-
-$ret_all .= add_arr_comb;
-
-}
+	if($opt == 1) {  
+		for($i += 1; $i < $k; $i++) {
+			$r->[$i] = $r->[$i - 1] + 1;
+		}
+		$count++;
+	}
+	if($opt == 2) {
+		for($i += 1; $i < $k; $i++) {
+			$r->[$i] = $r->[$i - 1];
+		}
+		$count++;
+	}
+	$ret_all .= add_arr_comb;
+	
+	}
 }
 
 sub requirements {
-print "Requirements:\n";
-print "k - integer\n";
-print "k > 0\n";
-print "k < or = size of array\n";
-print "opt = 1 or opt = 2\n";
-print "Quit\n";
-exit(1);
+	print "Requirements:\n";
+	print "k - integer\n";
+	print "k > 0\n";
+	print "k < or = size of array\n";
+	print "opt = 1 or opt = 2\n";
+	print "Quit\n";
+	exit(-1);
 }
 
 1;
 
-=pod
+__END__
 
 =head1 NAME
 
@@ -125,8 +120,6 @@ presented in the ANSI-C code by Siegfried Koepf at:
 http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
 
 =head1 SYNOPSIS
-
-EXAMPLE:
 
 use Math::Combination_out;
 
