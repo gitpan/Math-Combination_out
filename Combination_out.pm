@@ -8,12 +8,7 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
-our $VERSION = '0.08';
-
-sub combinations_without_repetition;
-sub combinations_with_repetition;
-sub add_arr_comb;
-sub requirements;
+our $VERSION = '0.09';
 
 sub combinations_without_repetition {
     my $count = 0;
@@ -22,7 +17,7 @@ sub combinations_without_repetition {
     my $n = $#words + 1;
     my $ret_all = ();
     if ($k <= 0 or $n == 0 or $k > $n) {
-        requirements;
+        requirements();
     }
     my $i;
     my @out_num;
@@ -60,7 +55,7 @@ sub combinations_with_repetition {
     my $n = $#words + 1;
     my $ret_all = ();
     if ($k <= 0 or $n == 0 or $k > $n) {
-        requirements;
+        requirements();
     }
     my $i;
     my @out_num;
@@ -123,7 +118,7 @@ Math::Combination_out - Combinations without/with repetition
     # array for combinatorics
     my @words = qw/a1 b2 c3 d4 e5 f6/;
 
-    # length for combinatorics, use only integer!
+    # length for combinatorics
     my $k = 4;
 
     print "---Combinations without repetition---\n\n";
@@ -135,7 +130,7 @@ Math::Combination_out - Combinations without/with repetition
     # array for combinatorics
     my @words = qw/a1 b2 c3/;
 
-    # length for combinatorics, use only integer!
+    # length for combinatorics
     my $k = 3;
 
     print "---Combinations with repetition---\n\n";
@@ -187,7 +182,7 @@ http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
 
 =head1 EXPORT
 
-combinations_without_repetition
+combinations_without_repetition,
 combinations_with_repetition
 
 The result is a string, equal to the full output
@@ -203,7 +198,7 @@ Report them to the author
 =head1 SEE ALSO
 
 L<Math::Combinatorics>,
-L<Algorithm::Combinatorics> 
+L<Algorithm::Combinatorics>
 
 =head1 COPYRIGHT
 
