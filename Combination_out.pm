@@ -8,13 +8,12 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 sub combinations_without_repetition {
     my $count = 0;
     my ($ref_words, $k) = @_;
-    my @words = @$ref_words;
-    my $n = $#words + 1;
+    my $n = $#$ref_words + 1;
     my $ret_all = ();
     if ($k <= 0 or $n == 0 or $k > $n) {
         requirements();
@@ -25,13 +24,8 @@ sub combinations_without_repetition {
         $out_num[$i] = $i;
     }
     $count++;
-    $ret_all .= add_arr_comb($count, $k, \@out_num, \@words);
+    $ret_all .= add_arr_comb(\@out_num, $count, $k, $ref_words);
     while() {
-        while($out_num[$k - 1] < $n - 1) {
-            $out_num[$k - 1]++;
-            $count++;
-            $ret_all .= add_arr_comb($count, $k, \@out_num, \@words);
-        }
         $i = $k - 1;
         while($i >= 0 && $out_num[$i] == $n - $k + $i) {
             $i--;
@@ -44,15 +38,14 @@ sub combinations_without_repetition {
             $out_num[$i] = $out_num[$i - 1] + 1;
         }
         $count++;
-        $ret_all .= add_arr_comb($count, $k, \@out_num, \@words);
+        $ret_all .= add_arr_comb(\@out_num, $count, $k, $ref_words);
     }
 }
 
 sub combinations_with_repetition {
     my $count = 0;
     my ($ref_words, $k) = @_;
-    my @words = @$ref_words;
-    my $n = $#words + 1;
+    my $n = $#$ref_words + 1;
     my $ret_all = ();
     if ($k <= 0 or $n == 0 or $k > $n) {
         requirements();
@@ -63,7 +56,7 @@ sub combinations_with_repetition {
         $out_num[$i] = 0;
     }
     $count++;
-    $ret_all .= add_arr_comb($count, $k, \@out_num, \@words);
+    $ret_all .= add_arr_comb(\@out_num, $count, $k, $ref_words);
     while() {
         $i = $k - 1;
         while($i >= 0 && $out_num[$i] == $n - 1) {
@@ -77,12 +70,12 @@ sub combinations_with_repetition {
             $out_num[$i] = $out_num[$i - 1];
         }
         $count++;
-        $ret_all .= add_arr_comb($count, $k, \@out_num, \@words);
+        $ret_all .= add_arr_comb(\@out_num, $count, $k, $ref_words);
     }
 }
 
 sub add_arr_comb {
-    my ($count, $k, $ref_out_num, $ref_words) = @_;
+    my ($ref_out_num, $count, $k, $ref_words) = @_;
     my $ret = ();
     $ret .= "($count) ";
     my $i;
@@ -175,10 +168,8 @@ Math::Combination_out - Combinations without/with repetition
 
 Math::Combination_out - Combinations without/with repetition
 
-In this module was applied the approach for k-combinations without and with repetition 
-in lexicographic order, presented in the ANSI-C code by Siegfried Koepf at:
-
-http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
+The number of combinations without repetition: n! / ((n - k)! * k!);
+The number of combinations with repetition: (n + k - 1)! / (k! * (n - 1)!)
 
 =head1 EXPORT
 
@@ -194,6 +185,11 @@ Petar Kaleychev <petar.kaleychev@gmail.com>
 =head1 BUGS
 
 Report them to the author
+
+=head1 REFERENCES
+
+Siegfried Koepf, Fast Combinatorial Algorithms in C,
+http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
 
 =head1 SEE ALSO
 
