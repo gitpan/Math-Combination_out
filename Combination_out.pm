@@ -8,18 +8,15 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 sub combinations_without_repetition {
-    my $count = 0;
     my ($ref_words, $k) = @_;
-    my $n = $#$ref_words + 1;
+    my $n = requirements(@_);
+    return if not defined $n;
+    my $count = 0;
     my $ret_all = ();
-    if ($k <= 0 or $n == 0 or $k > $n) {
-        requirements();
-    }
-    my $i;
-    my @out_num;
+    my ($i, @out_num);
     for($i = 0; $i < $k; $i++) {
         $out_num[$i] = $i;
     }
@@ -43,15 +40,12 @@ sub combinations_without_repetition {
 }
 
 sub combinations_with_repetition {
-    my $count = 0;
     my ($ref_words, $k) = @_;
-    my $n = $#$ref_words + 1;
+    my $n = requirements(@_);
+    return if not defined $n;
+    my $count = 0;
     my $ret_all = ();
-    if ($k <= 0 or $n == 0 or $k > $n) {
-        requirements();
-    }
-    my $i;
-    my @out_num;
+    my ($i, @out_num);
     for($i = 0; $i < $k; $i++) {
         $out_num[$i] = 0;
     }
@@ -74,6 +68,20 @@ sub combinations_with_repetition {
     }
 }
 
+sub requirements {
+    my ($ref_words, $k) = @_;
+    my $n = $#$ref_words + 1;
+    if ($k <= 0 or $n == 0 or $k > $n) {
+        print "Requirements:\n";
+        print "k - integer, k > 0\n";
+        print "k < or = size of array\n";
+        print "Quit\n";
+        return;
+    } else {
+        return $n;
+    }
+}
+
 sub add_arr_comb {
     my ($ref_out_num, $count, $k, $ref_words) = @_;
     my $ret = ();
@@ -85,14 +93,6 @@ sub add_arr_comb {
     $ret .= "\n";
     #print $ret; # view of continued progress
     return $ret;
-}
-
-sub requirements {
-    print "Requirements:\n";
-    print "k - integer, k > 0\n";
-    print "k < or = size of array\n";
-    print "Quit\n";
-    exit(-1);
 }
 
 1;
