@@ -8,7 +8,7 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 sub combinations_without_repetition {
     my ($ref_words, $k) = @_;
@@ -71,7 +71,7 @@ sub combinations_with_repetition {
 sub requirements {
     my ($ref_words, $k) = @_;
     my $n = $#$ref_words + 1;
-    if ($k <= 0 or $n == 0 or $k > $n) {
+    if ($k <= 0 or $k > $n) {
         print "Requirements:\n";
         print "k - integer, k > 0\n";
         print "k < or = size of array\n";
