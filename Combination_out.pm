@@ -1,6 +1,5 @@
 package Math::Combination_out;
 
-use 5.010000;
 use strict;
 use warnings;
 
@@ -8,7 +7,7 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 sub combinations_without_repetition {
     my ($ref_words, $k) = @_;
