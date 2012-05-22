@@ -2,4 +2,5 @@ Changes
 Combination_out.pm
 Makefile.PL
 MANIFEST
+README
 test.pl

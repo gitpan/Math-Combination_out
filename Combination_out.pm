@@ -1,13 +1,14 @@
 package Math::Combination_out;
 
-use strict;
+use Carp;
 use warnings;
 
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
-our $VERSION = '0.13';
+
+our $VERSION = '0.14';
 
 sub combinations_without_repetition {
     my ($ref_words, $k) = @_;
@@ -69,7 +70,7 @@ sub combinations_with_repetition {
 
 sub requirements {
     my ($ref_words, $k) = @_;
-    my $n = $#$ref_words + 1;
+    my $n = scalar @{ $ref_words };
     if ($k <= 0 or $k > $n) {
         print "Requirements:\n";
         print "k - integer, k > 0\n";
@@ -77,7 +78,7 @@ sub requirements {
         print "Quit\n";
         return;
     } else {
-        return $n;
+        $n;
     }
 }
 
@@ -91,7 +92,60 @@ sub add_arr_comb {
     }
     $ret .= "\n";
     #print $ret; # view of continued progress
-    return $ret;
+    $ret;
+}
+
+sub new {
+    my ($class, $in) = @_;
+    defined $in || croak 'Undefined input';
+    my @in = split(/\n/, $in);
+    bless \@in, $class;
+    return \@in;
+}
+
+sub num_rem {
+    my $foo = shift;
+    my $out = ();
+    my @foo = @{ $foo };
+    foreach (@foo) {
+        $_ =~ s/^\(\d+\) //g;
+        $out .= $_."\n";
+    }
+    $out;
+}
+
+sub match {
+    my ($foo, $patt) = @_;
+    defined $patt || croak 'Undefined pattern';
+    my $out = ();
+    foreach (@{ $foo }) {
+        $out .= $_."\n" if $_ =~ /$patt/;
+    }
+    defined $out ? return $out : print 'Without matching', "\n";
+    return;
+}
+
+sub match_no {
+    my ($foo, $patt) = @_;
+    defined $patt || croak 'Undefined pattern';
+    my $out = ();
+    foreach (@{ $foo }) {
+        $out .= $_."\n" unless $_ =~ /$patt/;
+    }
+    defined $out ? return $out : print 'Without no matching', "\n";
+    return;
+}
+
+sub subt {
+    my ($foo, $patt, $subt) = @_;
+    defined $subt || croak 'Undefined substitution input';
+    my $out = ();
+    my @foo = @{ $foo };
+    foreach (@foo) {
+        $_ =~ s/$patt/$subt/g;
+        $out .= $_."\n";
+    }
+    $out;
 }
 
 1;
@@ -100,7 +154,12 @@ __END__
 
 =head1 NAME
 
-Math::Combination_out - Combinations without/with repetition
+Math::Combination_out - Combinations without/with repetition and selection
+
+In this module was applied the approach for k-combinations without/with repetition in lexicographic order, 
+presented in the ANSI-C code by Siegfried Koepf at:
+
+http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
 
 =head1 SYNOPSIS
 
@@ -163,9 +222,115 @@ Math::Combination_out - Combinations without/with repetition
     (9) b2 c3 c3
     (10) c3 c3 c3
 
+    ---
+
+    For selection of combinations:
+
+    my $out = Math::Combination_out->new(combinations_without_repetition(\@words, $k));
+
+    print $out->num_rem(), "\n"; # removing the numbers before combinations
+    
+    Output:
+    a1 b2 c3 d4
+    a1 b2 c3 e5
+    a1 b2 c3 f6
+    a1 b2 d4 e5
+    a1 b2 d4 f6
+    a1 b2 e5 f6
+    a1 c3 d4 e5
+    a1 c3 d4 f6
+    a1 c3 e5 f6
+    a1 d4 e5 f6
+    b2 c3 d4 e5
+    b2 c3 d4 f6
+    b2 c3 e5 f6
+    b2 d4 e5 f6
+    c3 d4 e5 f6
+
+    print $out->match('f6'), "\n"; # matching
+
+    Output:
+    (3) a1 b2 c3 f6
+    (5) a1 b2 d4 f6
+    (6) a1 b2 e5 f6
+    (8) a1 c3 d4 f6
+    (9) a1 c3 e5 f6
+    (10) a1 d4 e5 f6
+    (12) b2 c3 d4 f6
+    (13) b2 c3 e5 f6
+    (14) b2 d4 e5 f6
+    (15) c3 d4 e5 f6
+
+    print $out->match('d4 f6'), "\n";
+
+    Output:
+    (5) a1 b2 d4 f6
+    (8) a1 c3 d4 f6
+    (12) b2 c3 d4 f6
+
+    print $out->match('^\(3\)'), "\n";
+
+    Output:
+    (3) a1 b2 c3 f6
+
+    print $out->match('e5 $'), "\n";
+
+    Output:
+    (2) a1 b2 c3 e5
+    (4) a1 b2 d4 e5
+    (7) a1 c3 d4 e5
+    (11) b2 c3 d4 e5
+
+    print $out->match_no('f6'), "\n"; # no matching
+
+    Output:
+    (1) a1 b2 c3 d4
+    (2) a1 b2 c3 e5
+    (4) a1 b2 d4 e5
+    (7) a1 c3 d4 e5
+    (11) b2 c3 d4 e5
+
+    print $out->subt('e5 ', 'NEW '), "\n"; # substitute
+
+    Output:
+    (1) a1 b2 c3 d4
+    (2) a1 b2 c3 NEW
+    (3) a1 b2 c3 f6
+    (4) a1 b2 d4 NEW
+    (5) a1 b2 d4 f6
+    (6) a1 b2 NEW f6
+    (7) a1 c3 d4 NEW
+    (8) a1 c3 d4 f6
+    (9) a1 c3 NEW f6
+    (10) a1 d4 NEW f6
+    (11) b2 c3 d4 NEW
+    (12) b2 c3 d4 f6
+    (13) b2 c3 NEW f6
+    (14) b2 d4 NEW f6
+    (15) c3 d4 NEW f6
+
+    print $out->subt('e5 $', 'NEW '), "\n";
+
+    Output:
+    (1) a1 b2 c3 d4
+    (2) a1 b2 c3 NEW
+    (3) a1 b2 c3 f6
+    (4) a1 b2 d4 NEW
+    (5) a1 b2 d4 f6
+    (6) a1 b2 e5 f6
+    (7) a1 c3 d4 NEW
+    (8) a1 c3 d4 f6
+    (9) a1 c3 e5 f6
+    (10) a1 d4 e5 f6
+    (11) b2 c3 d4 NEW
+    (12) b2 c3 d4 f6
+    (13) b2 c3 e5 f6
+    (14) b2 d4 e5 f6
+    (15) c3 d4 e5 f6
+
 =head1 DESCRIPTION
 
-Math::Combination_out - Combinations without/with repetition
+Math::Combination_out - Combinations without/with repetition and selection
 
 The number of combinations without repetition: n! / ((n - k)! * k!);
 The number of combinations with repetition: (n + k - 1)! / (k! * (n - 1)!)
@@ -174,8 +339,6 @@ The number of combinations with repetition: (n + k - 1)! / (k! * (n - 1)!)
 
 combinations_without_repetition,
 combinations_with_repetition
-
-The result is a string, equal to the full output
 
 =head1 AUTHOR
 
