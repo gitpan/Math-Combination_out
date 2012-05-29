@@ -1,14 +1,14 @@
 package Math::Combination_out;
 
+use strict;
 use Carp;
-use warnings;
 
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 sub combinations_without_repetition {
     my ($ref_words, $k) = @_;
