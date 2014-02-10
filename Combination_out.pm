@@ -8,7 +8,7 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 sub combinations_without_repetition {
     my ($ref_words, $k) = @_;
@@ -24,14 +24,12 @@ sub combinations_without_repetition {
     $ret_all .= add_arr_comb(\@out_num, $count, $k, $ref_words);
     while() {
         $i = $k - 1;
-        while($i >= 0 && $out_num[$i] == $n - $k + $i) {
+        while($out_num[$i] == $n - $k + $i) {
             $i--;
         }
-        if($i < 0) {
-            return $ret_all;
-        }
+        return $ret_all if $i < 0;
         $out_num[$i]++;
-        for($i += 1; $i < $k; $i++) {
+        for($i++; $i < $k; $i++) {
             $out_num[$i] = $out_num[$i - 1] + 1;
         }
         $count++;
@@ -53,14 +51,12 @@ sub combinations_with_repetition {
     $ret_all .= add_arr_comb(\@out_num, $count, $k, $ref_words);
     while() {
         $i = $k - 1;
-        while($i >= 0 && $out_num[$i] == $n - 1) {
+        while($out_num[$i] == $n - 1) {
             $i--;
         }
-        if($i < 0) {
-            return $ret_all;
-        }
+        return $ret_all if $i < 0;
         $out_num[$i]++;
-        for($i += 1; $i < $k; $i++) {
+        for($i++; $i < $k; $i++) {
             $out_num[$i] = $out_num[$i - 1];
         }
         $count++;
@@ -91,7 +87,6 @@ sub add_arr_comb {
         $ret .= "$ref_words->[$ref_out_num->[$i]] ";
     }
     $ret .= "\n";
-    #print $ret; # view of continued progress
     $ret;
 }
 
@@ -155,11 +150,6 @@ __END__
 =head1 NAME
 
 Math::Combination_out - Combinations without/with repetition and selection
-
-In this module was applied the approach for k-combinations without/with repetition in lexicographic order, 
-presented in the ANSI-C code by Siegfried Koepf at:
-
-http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
 
 =head1 SYNOPSIS
 
@@ -355,12 +345,14 @@ http://www.aconnect.de/friends/editions/computer/combinatoricode_e.html
 
 =head1 SEE ALSO
 
+L<Math::Counting>,
+L<Math::Subsets::List>,
 L<Math::Combinatorics>,
 L<Algorithm::Combinatorics>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2011-2012 Petar Kaleychev
+Copyright (c) 2014 Petar Kaleychev
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
