@@ -8,7 +8,7 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition);
 
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 sub combinations_without_repetition {
     my ($ref_words, $k) = @_;
@@ -66,7 +66,7 @@ sub combinations_with_repetition {
 
 sub requirements {
     my ($ref_words, $k) = @_;
-    my $n = scalar @{ $ref_words };
+    my $n = scalar @$ref_words;
     if ($k <= 0 or $k > $n) {
         print "Requirements:\n";
         print "k - integer, k > 0\n";
@@ -86,8 +86,7 @@ sub add_arr_comb {
     for($i = 0; $i < $k; $i++) {
         $ret .= "$ref_words->[$ref_out_num->[$i]] ";
     }
-    $ret .= "\n";
-    $ret;
+    return $ret .= "\n";
 }
 
 sub new {
@@ -101,8 +100,7 @@ sub new {
 sub num_rem {
     my $foo = shift;
     my $out = ();
-    my @foo = @{ $foo };
-    foreach (@foo) {
+    foreach (@$foo) {
         $_ =~ s/^\(\d+\) //g;
         $out .= $_."\n";
     }
@@ -113,7 +111,7 @@ sub match {
     my ($foo, $patt) = @_;
     defined $patt || croak 'Undefined pattern';
     my $out = ();
-    foreach (@{ $foo }) {
+    foreach (@$foo) {
         $out .= $_."\n" if $_ =~ /$patt/;
     }
     defined $out ? return $out : print 'Without matching', "\n";
@@ -124,7 +122,7 @@ sub match_no {
     my ($foo, $patt) = @_;
     defined $patt || croak 'Undefined pattern';
     my $out = ();
-    foreach (@{ $foo }) {
+    foreach (@$foo) {
         $out .= $_."\n" unless $_ =~ /$patt/;
     }
     defined $out ? return $out : print 'Without no matching', "\n";
@@ -135,8 +133,7 @@ sub subt {
     my ($foo, $patt, $subt) = @_;
     defined $subt || croak 'Undefined substitution input';
     my $out = ();
-    my @foo = @{ $foo };
-    foreach (@foo) {
+    foreach (@$foo) {
         $_ =~ s/$patt/$subt/g;
         $out .= $_."\n";
     }
@@ -321,9 +318,6 @@ Math::Combination_out - Combinations without/with repetition and selection
 =head1 DESCRIPTION
 
 Math::Combination_out - Combinations without/with repetition and selection
-
-The number of combinations without repetition: n! / ((n - k)! * k!);
-The number of combinations with repetition: (n + k - 1)! / (k! * (n - 1)!)
 
 =head1 EXPORT
 
