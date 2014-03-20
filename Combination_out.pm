@@ -7,9 +7,9 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(combinations_without_repetition
                  combinations_with_repetition
-				 num_rem);
+                 num_rem);
 
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 
 sub combinations_without_repetition {
     my ($ref_words, $k) = @_;
@@ -22,8 +22,8 @@ sub combinations_without_repetition {
         $out_num[$i] = $i;
     }
     ++$count;
-	my $ret_ref = \&add_arr_comb;
-	$ret_all .= ${&$ret_ref(\@out_num, $count, $ref_words)};
+    my $ret_ref = \&add_arr_comb;
+    $ret_all .= ${&$ret_ref(\@out_num, $count, $ref_words)};
     while() {
         $i = $k - 1;
         while($i >= 0 && $out_num[$i] == $n - $k + $i) {
@@ -50,8 +50,8 @@ sub combinations_with_repetition {
         $out_num[$i] = 0;
     }
     ++$count;
-	my $ret_ref = \&add_arr_comb;
-	$ret_all .= ${&$ret_ref(\@out_num, $count, $ref_words)};
+    my $ret_ref = \&add_arr_comb;
+    $ret_all .= ${&$ret_ref(\@out_num, $count, $ref_words)};
     while() {
         $i = $k - 1;
         while($i >= 0 && $out_num[$i] == $n - 1) {
@@ -105,33 +105,33 @@ __END__
 
 =head1 NAME
 
-Math::Combination_out - Combinations without/with repetition
+Math::Combination_out
 
 =head1 SYNOPSIS
-    
+
     use Math::Combination_out;
-    
+
     # @words - array for combinatorics; $k - length for combinatorics
     my @words = qw/a1 b2 c3 d4 e5 f6/;
     my $k = 4;
     print "---Combinations without repetition---\n\n";
     print combinations_without_repetition(\@words, $k), "\n";
-	print num_rem(combinations_without_repetition(\@words, $k)), "\n";
+    print num_rem(combinations_without_repetition(\@words, $k)), "\n";
     my @words = qw/a1 b2 c3/;
     my $k = 3;
     print "---Combinations with repetition---\n\n";
     print combinations_with_repetition(\@words, $k), "\n";
-	print num_rem(combinations_with_repetition(\@words, $k)), "\n";
-    
+    print num_rem(combinations_with_repetition(\@words, $k)), "\n";
+
 
 =head1 DESCRIPTION
 
-Math::Combination_out - Combinations without/with repetition
+Combinations without/with repetition
 
 =head1 EXPORT
 
 combinations_without_repetition,
-combinations_with_repetition
+combinations_with_repetition,
 num_rem
 
 =head1 AUTHOR
